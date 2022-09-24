@@ -37,6 +37,7 @@ var hourKeys = [
 
 var eventValues = []
 
+
 //Adding Current Date to DOM
 currentDayEl.text(currentDay);
 
@@ -49,19 +50,17 @@ function displayEventRows() {
 
   for ( var i = 0; i < hours.length; i++) {
       //Create Time-block Row
-    var timeBlockRowEl = $("<section>").addClass("row");
+    var timeBlockRowEl = $("<section>").addClass("row time-block");
     
     //Create Time Element
     var timeEl = $("<h5>").addClass("col-2 hour").text(hours[i]);
     
     //Create Textarea
     var eventInputEl = $("<textarea>").addClass("col-8 description");
-    eventInputEl.attr("id", hours[i])
-
-    if (eventValues[i]){
-      eventInputEl.value = eventValues[i];
-    }
-    
+    eventInputEl.attr("id", hourKeys.indexOf(hourKeys[i]));
+    eventInputEl.val(eventValues[i]) ;
+     
+   
     if (currentTime < hourKeys[i]) {
       eventInputEl.addClass("future")
     } else if ( currentTime > hourKeys[i]){
@@ -72,6 +71,7 @@ function displayEventRows() {
 
     //Create Save Btn
     var saveBtnEl = $("<button>").addClass("col-2 btn btn-primary saveBtn").text("SAVE");
+    saveBtnEl.attr("type", "button");
     
     // Append Elements
     timeBlockRowEl.append(
@@ -87,23 +87,27 @@ function displayEventRows() {
 
 
 
-function showEvent() {
-  if (JSON.parse(localStorage.getItem("tasks"))) {
-    eventValues = JSON.parse(localStorage.getItem("tasks"));
-  }
-};
+
 
 
 
 displayEventRows();
 
 
-saveBtn.on("click", function(){
-  var tasks = []
-  for (var i=0; i < hourKeys.length; i++) {
-    tasks.push(document.getElementsByClassName(".saveBtn")[i].value);
-  }
 
-  eventValues = tasks;
-  localStorage.setItem("tasks", JSON.stringify(eventValues));
-})
+$("button").click(function(){
+
+  var event = [];
+  for (var i = 0; i < hourKeys.length; i++){
+    event.push(document.getElementsByTagName("textarea")[i].value);
+  }
+  eventValues = event;
+  localStorage.setItem("event", JSON.stringify(eventValues));  
+
+  alert("Event Saved!");  
+});
+
+function showEvent() {
+    eventValues = JSON.parse(localStorage.getItem("event")); 
+
+};
