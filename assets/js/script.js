@@ -58,9 +58,15 @@ function displayEventRows() {
     //Create Textarea
     var eventInputEl = $("<textarea>").addClass("col-8 description");
     eventInputEl.attr("id", hourKeys.indexOf(hourKeys[i]));
-    eventInputEl.val(eventValues[i]) ;
+
+   //Pull from array as a value if there's an event tied to the index
+
+    if (eventValues[i]){
+      eventInputEl.val(eventValues[i]);
+    };
+    
      
-   
+   //Change color of time-blocks based on time
     if (currentTime < hourKeys[i]) {
       eventInputEl.addClass("future")
     } else if ( currentTime > hourKeys[i]){
@@ -85,15 +91,10 @@ function displayEventRows() {
   };
 };
 
-
-
-
-
-
-
+//Dynamically display page
 displayEventRows();
 
-
+//Save button function
 
 $("button").click(function(){
 
@@ -107,7 +108,12 @@ $("button").click(function(){
   alert("Event Saved!");  
 });
 
+//Pull from local storage to show saved events if events are stored
+
 function showEvent() {
+  if(JSON.parse(localStorage.getItem("event"))){
     eventValues = JSON.parse(localStorage.getItem("event")); 
+  };
+    
 
 };
